@@ -48,20 +48,19 @@ end = date
 
 raw_data = {}
 
-'''
+ts = TimeSeries(key=av_key, output_format='pandas')
+
 for t in tickers:
 
-    data = DataReader(t,'yahoo', start, end)
+    #data = DataReader(t,'yahoo', start, end)
+    data, metadata = ts.get_weekly_adjusted(t)
 
     raw_data[t] = data
-'''
 
-ts = TimeSeries(key=av_key)
-# Get json object with the intraday data and another with  the call's metadata
-data, meta_data = ts.get_intraday('GOOGL')
 
 pan = pd.Panel(raw_data)
-pan_close = pan.minor_xs('Adj Close')
+#pan_close = pan.minor_xs('Adj Close')
+pan_close = pan.minor_xs('4. close')
 
 corr = pan_close.corr()
 
@@ -90,11 +89,13 @@ name4 = type4+'_plot_'+title4
 title5, type5 ='Boxplot', 'boxplot'
 name5 = type5+'_plot_'+title5
 
+'''
 vis.visualization(pan_close.index, pan_close, tickers, title1, labels, type1, datetime(2000,1,1), end, 0, max_pan_close*1.1, 'None')
 vis.visualization(pan_close_ix.index, pan_close_ix, tickers, title2, labels, type2, first_valid_loc, end, min_pan_close_ix*1.1, max_pan_close_ix*1.1, 'percent')
 vis.visualization('None', pan_close, 'None', title3, tkr_lbl, type3, 'None', 'None', 'None', 'None', 'None')
 vis.visualization('None', pan_close, tickers, title4, labels, type4, 'None', 'None', 'None', 'None', 'None')
 vis.visualization('None', pan_close, tickers, title5, labels, type5, 'None', 'None', 'None', 'None', 'None')
+'''
 
 # Generate HTML report
 html_loc = 'html/report.html' #C:/Users/pbeiter/Desktop/Python finance
