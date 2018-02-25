@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from pandas.io.data import DataReader
+#from pandas.io.data import DataReader # datareader no longer support yahoo finance API; import manual file downloads instead
 from datetime import datetime
 import pylab
 import seaborn as sns

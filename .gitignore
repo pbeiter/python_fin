@@ -1,3 +1,9 @@
-fig/
+/fig
+
 *.xlsx
 *.xls
+*.csv
+
+*.pyc
+
+alpha_vantage_key.py

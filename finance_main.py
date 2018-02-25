@@ -1,12 +1,13 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from pandas.io.data import DataReader
-from datetime import datetime
+#from pandas_datareader import data, wb # datareader no longer support yahoo finance API; import via alpha_vantage or manual file downloads instead
+from alpha_vantage.timeseries import TimeSeries
+from datetime import datetime 
 import webbrowser
 from urllib import pathname2url
 import os
-
+from alpha_vantage_key import av_key
 import finance_visualization as vis
 import html
 
@@ -47,12 +48,17 @@ end = date
 
 raw_data = {}
 
+'''
 for t in tickers:
 
     data = DataReader(t,'yahoo', start, end)
 
     raw_data[t] = data
+'''
 
+ts = TimeSeries(key=av_key)
+# Get json object with the intraday data and another with  the call's metadata
+data, meta_data = ts.get_intraday('GOOGL')
 
 pan = pd.Panel(raw_data)
 pan_close = pan.minor_xs('Adj Close')
