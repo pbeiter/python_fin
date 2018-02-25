@@ -4,6 +4,8 @@
 *.xls
 *.csv
 
+*.png
+
 *.pyc
 
 alpha_vantage_key.py
