@@ -61,24 +61,24 @@ out_dat = out_dat.set_axis(['mean', 'min', 'max', 'std'], axis=0, inplace=False)
 out_dat['mean'] = out_dat.mean(axis=1)
 
 
-#/ Time-weighted rate of return (TWRR)
+#/ Time-weighted rate of return (twror)
 
 def twror(pv,c,superiods):
 
-	twr = 1.0
+	twror = 1.0
 
 	for t in range(1,subperiods,1):
 
 		hpr = (pv[t] - c[t])/pv[t-1] - 1.0
 		print(t, hpr)
-		twr *= (1.0 + hpr)
-		print(twr)
+		twror *= (1.0 + hpr)
+		print(twror)
 
-	ctwr = (twr**(1.0/(subperiods-1))) - 1
-	return ctwr
+	ctwror = (twror**(1.0/(subperiods-1))) - 1
+	return ctwror
 
-pv = [10.0, 1.1*10, 1.1*1.1*10, 1.1*1.1*1.1*10]
-c = [0.0, 0.0, 0.0, 0.0]
+pv = [10.0, 1.1*10, 1.1*1.1*10, 1.1*1.1*1.1*10] # portfolio value in period t
+c = [0.0, 0.0, 0.0, 0.0] # net inflow in period t
 subperiods = len(pv)
 result = twror(pv,c,subperiods)
 print(result)
