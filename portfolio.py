@@ -22,6 +22,9 @@ class analysis(_Portfolio):
 		self.max = self.data.max()
 		self.std = self.data.std()
 
+		#ctwr = (1 + HPR1)*(1 + HPR2)*(1 + HPR3)…*(1 + HPRn-1)*(1 + HPRn) – 1
+		#twr = (1 + compounded TWRR) 1/n – 1
+
 		#self.bv = self.data['Purchase amount'] * self.data['Purchase price'] # buy value
 		#self.pv = (self.data['Purchase amount'] - self.data['Sell amount']) * self.data['Market price'] #present value
 
@@ -30,9 +33,7 @@ class analysis(_Portfolio):
 ### Data read-in
 wb = pyxl.load_workbook('portfolio.xlsx')
 
-data = {}
-portfolio_set = {}
-
+data, portfolio_set = {}, {}
 for count, sheet in enumerate(wb.worksheets, 0):
 	#name = 'p{}'.format(count)
 	data[count] = pd.DataFrame(sheet.values)
@@ -42,13 +43,6 @@ for count, sheet in enumerate(wb.worksheets, 0):
 	data[count] = data[count][1:]
 
 	portfolio_set[count] = data[count]
-
-'''
-#/ Create dict of portfolio: data
-portfolio_set = {}
-for count, d in enumerate(data, 0):
-	portfolio_set[d] = data[count]
-'''
 
 #/ Create portfolio objects
 if __name__ == '__main__':
@@ -66,5 +60,25 @@ out_dat = out_dat.set_axis(['mean', 'min', 'max', 'std'], axis=0, inplace=False)
 
 out_dat['mean'] = out_dat.mean(axis=1)
 
-#np.round(placeholder, decimals = 2)
 
+#/ Time-weighted rate of return (TWRR)
+
+def twror(pv,c,superiods):
+
+	twr = 1.0
+
+	for t in range(1,subperiods,1):
+
+		hpr = (pv[t] - c[t])/pv[t-1] - 1.0
+		print(t, hpr)
+		twr *= (1.0 + hpr)
+		print(twr)
+
+	ctwr = (twr**(1.0/(subperiods-1))) - 1
+	return ctwr
+
+pv = [10.0, 1.1*10, 1.1*1.1*10, 1.1*1.1*1.1*10]
+c = [0.0, 0.0, 0.0, 0.0]
+subperiods = len(pv)
+result = twror(pv,c,subperiods)
+print(result)
